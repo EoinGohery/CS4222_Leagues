@@ -7,6 +7,7 @@ public class LeaguesMenu
     public static final String[] subMenu = { "Veiw Leaderboard", "Veiw Fixtures", "Add Results", "Back to Main Menu" };
       
     public static void main(String[] args) {
+      login();
       boolean main = true;
       while (main) {
           boolean sub = true;
@@ -46,6 +47,10 @@ public class LeaguesMenu
     }
     
     public static void addResults() {
+        
+    }
+    
+    public static void login() {
         
     }
 }
