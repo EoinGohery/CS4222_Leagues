@@ -1,0 +1,132 @@
+import java.util.Scanner;
+import javax.swing.JOptionPane;
+import java.io.*;
+
+
+public class Login
+{ private static Scanner x;
+    private static Scanner y;
+    private static Scanner z;
+    public static void start() throws IOException { 
+        String userName,password,account,checkA,checkB;
+       File accountInfo = new File ("userInfo.txt");
+       FileWriter outputStream = new FileWriter(accountInfo,true);//true appends file instead
+       PrintWriter pw = new PrintWriter(outputStream);            //of overwriting
+        account  = JOptionPane.showInputDialog(null,"Do you have an existing account?  Y/N");
+        account = account.toLowerCase();
+        System.out.println(account);
+        checkA = "y";
+        checkB = "n";
+        String filePath = ("userInfo.txt");
+        int i = 0;
+        /*pw.println("line 1,a");
+        pw.println("line 2");
+        pw.println("line 3");//I am not writing directly to the file,i am writing to the file
+                             //writer which writes it to the file in one chunk
+        pw.close();//indication to copy filewriter into text file */                     
+        if (account.equals(checkA)){
+            userName = JOptionPane.showInputDialog(null,"Enter username");
+        
+        password = JOptionPane.showInputDialog(null,"Enter pass");
+        verifyLogin(userName,password,filePath);
+        }else{
+            while(!account.equals(checkA)&& !account.equals(checkB))
+            {
+          JOptionPane.showMessageDialog(null,"Please enter either Y or N");
+         account  = JOptionPane.showInputDialog(null,"Do you have an existing account?  Y/N");
+         account = account.toLowerCase();
+        }
+        }
+        if (account.equals(checkB)){
+            userName = JOptionPane.showInputDialog(null,"Please enter your desired username");
+            password = JOptionPane.showInputDialog(null,"Please enter your desired password");
+            String accountDetails = userName +"," + password;
+            pw.println(accountDetails);
+            
+        }
+        
+        
+        
+        
+        pw.close();
+    }
+    public static void verifyLogin(String userName, String password,String fileLocation)
+    {boolean found = false;
+     String tempUser = "";
+     String tempPass = "";
+     int i = 0;
+     try
+     { x = new Scanner(new File(fileLocation));//reads file
+         x.useDelimiter("[,\n]");//each field seperated by a coma or space
+         
+         while(x.hasNext() && !found)
+         { tempUser = x.next();
+             tempPass = x.next();
+             
+             
+             if (tempUser.trim().equals(userName.trim())&& tempPass.trim().equals(password.trim()))
+             { found = true;//trim method removes spaces
+                 JOptionPane.showMessageDialog(null,"Login successful");
+                 
+                }else 
+                { JOptionPane.showMessageDialog(null,"Login failed,try again");
+             userName = JOptionPane.showInputDialog(null,"Please enter  username");
+             password = JOptionPane.showInputDialog(null,"Please enter  password");
+                    
+            }
+            
+            
+        
+        }
+        y = new Scanner(new File(fileLocation));//reads file
+         y.useDelimiter("[,\n]");//each field seperated by a coma or space
+         
+         while(y.hasNext() && !found)
+         { tempUser = y.next();
+             tempPass = y.next();
+             
+             
+             if (tempUser.trim().equals(userName.trim())&& tempPass.trim().equals(password.trim()))
+             { found = true;//trim method removes spaces
+                 JOptionPane.showMessageDialog(null,"Login successful");
+                 
+                }else 
+                { JOptionPane.showMessageDialog(null,"Login failed,try again");
+                    userName = JOptionPane.showInputDialog(null,"Please enter your desired username");
+            password = JOptionPane.showInputDialog(null,"Please enter your desired password");
+                    
+            }
+            
+            
+        
+        }
+        z = new Scanner(new File(fileLocation));//reads file
+         z.useDelimiter("[,\n]");//each field seperated by a coma or space
+         
+         while(z.hasNext() && !found)
+         { tempUser = z.next();
+             tempPass = z.next();
+             
+             
+             if (tempUser.trim().equals(userName.trim())&& tempPass.trim().equals(password.trim()))
+             { found = true;//trim method removes spaces
+                 JOptionPane.showMessageDialog(null,"Login successful");
+                 
+                }else 
+                { JOptionPane.showMessageDialog(null,"Login failed,try again");
+               
+            }
+            
+            
+        
+        }
+    }
+        catch(Exception e)
+        {
+        }
+        
+        
+    }
+}
+
+    
