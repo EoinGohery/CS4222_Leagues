@@ -1,0 +1,15 @@
+public class Project
+{
+public static void main(String [] args)  {
+try {
+	Login.start();
+	LeaguesMenu.start();
+}
+catch(Exception e)
+{
+}
+
+	
+	}
+	}
+ 
