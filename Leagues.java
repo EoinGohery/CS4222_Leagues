@@ -5,16 +5,15 @@ import javax.swing.*;
 
 public class Leagues
 {
-    public static final String[] mainMenu = { "Create League", "Veiw League", "Log Out" };
-    public static final String[] subMenu = {"Veiw Teams", "Veiw Leaderboard", "Veiw Fixtures", "Add Results", "Back to Main Menu" };
+    private static final String[] mainMenu = { "Create League", "Veiw League", "Log Out" };
+    private static final String[] subMenu = {"Veiw Teams", "Veiw Leaderboard", "Veiw Fixtures", "Add Results", "Back to Main Menu" };
     private static Scanner x;
     private static Scanner y;
     private static Scanner z;
     private static Scanner findAdminNum;
-    public static int currentAdminNum;
-    public static File accountInfo = new File ("userInfo.txt");
-    public int newAdminNum = 0;
-      
+    private static int currentAdminNum;
+    private static File accountInfo = new File ("userInfo.txt");
+
     public static void main(String[] args) throws IOException  {
         boolean main = true;
         login();
@@ -89,12 +88,13 @@ public class Leagues
             userName = JOptionPane.showInputDialog(null,"Please enter your desired username");
             password = JOptionPane.showInputDialog(null,"Please enter your desired password");
             findAdminNum = new Scanner(accountInfo);
+            int newAdminNum = 1;
             while(findAdminNum.hasNext()) {
                  findAdminNum.next();
                  newAdminNum++;
             }
             findAdminNum.close();
-            String accountDetails = newAdminNum + ", " + userName +", " + password;
+            String accountDetails = newAdminNum + "," + userName +"," + password;
             pw.println(accountDetails);     
         }
         pw.close();
