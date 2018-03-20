@@ -1,10 +1,9 @@
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
-public class LeagueMenu
-{
-    private static final String[] mainMenu = { "Create League", "View League", "Log Out" };
-    private static final String[] subMenu = {"View Teams", "View Leaderboard", "View Fixtures", "Add Results", "Back to Main Menu" };
+public class LeagueMenu {
+    private static final String[] mainMenu = { "Create League", "View and Edit", "Log Out" };
+    private static final String[] subMenu = {"View Leagues", "View Teams", "View Leaderboard", "View Fixtures", "Add Results", "Back to Main Menu" };
     private static Scanner x;
     private static Scanner y;
     private static Scanner z;
@@ -22,7 +21,7 @@ public class LeagueMenu
           String section = (String) JOptionPane.showInputDialog(null, "Menu","",JOptionPane.QUESTION_MESSAGE, null, mainMenu, mainMenu[0]);
           if(section=="Create League") {
               createLeague();
-          }else if(section=="View League") { 
+          }else if(section=="View and Edit") { 
             while (sub) {
                 String subSection = (String) JOptionPane.showInputDialog(null, "Menu","",JOptionPane.QUESTION_MESSAGE, null, subMenu, subMenu[0]);
                 if(subSection=="View Leaderboard"){
@@ -33,7 +32,9 @@ public class LeagueMenu
                     addResults();
                 }else if(subSection =="View Teams") {
 					viewTeams();
-				}else {
+				}else if(subSection =="View Leagues") {
+					viewLeagues();
+				}else  {
                     sub = false;
                 }
             }
@@ -44,14 +45,23 @@ public class LeagueMenu
       System.exit(0);
     }
   
-    public static void createLeague() throws IOException {
+    
+	public static void Leagues(int leagueNumber,String leagueName) {
+		String[] leagueList = new String [leagueNumber];
+		for (int i = 0;i < leagueNumber;i++) {
+			leagueList[i] = leagueName;
+		}	
+	}
+	
+
+	public static void createLeague() throws IOException {
 		//JOptionPane, asks for League name and number of teams, automatically asigns league number based on how many already exist
 		// JOptionPane, asks to input team names corresponding to number of teams
 		String leagueName;
 		int leagueNumber = 0;
 		int numberOfTeams;
 		int adminNum = 0;
-		String adminNumber = "admin"
+		String adminNumber = "admin";
 		String fileTeamNames = "";
 		String teamNames = ""; // The string for listing teams, in line 57 the teams are added 1 by 1.
 		FileWriter outputStream = new FileWriter(leagueInfo,true);
@@ -88,34 +98,45 @@ public class LeagueMenu
 		pw2.close();
 	
     }
+	
+	
+	
   
     public static void viewLeaderboard() {
       
     }
 	
+	public static void viewLeagues(String[] leagueList) {
+		String list = (String)(JOptionPane.showInputDialog(null, "Leagues","",JOptionPane.QUESTION_MESSAGE, null, leagueList, leagueList[0]));
+	}
+	
+	
+	
+	
 	public static void viewTeams() {
 		boolean found = false;
 		String tempLeagueName = "";
 		String tempLeagueNumber = "";
-		int checkLeagueNumber;
+		String checkLeagueNumber = "";
 		int i = 0;
 		if (leagueInfo.length() == 0) {
             JOptionPane.showMessageDialog(null,"No leagues have been created yet");
 		
 		} else {
 			try{
-				checkLeagueNumber = JOptionPane.showInputDialog(null,"Please enter league number");
+				checkLeagueNumber = (String)JOptionPane.showInputDialog(null,"Please enter league number");
 				x = new Scanner(leagueInfo);
 				x.useDelimiter("[,\n]");
 				while(x.hasNext() && !found) {
 					tempLeagueNumber = x.next();
 					if(tempLeagueNumber.trim().equals(checkLeagueNumber.trim())) {
-					found = true
-					
-		}
-		
-	}	
-    
+					found = true;
+					}	
+				}				
+			}
+			catch(Exception e){}
+		}	
+    }
     public static void viewFixtures() {
         
     }
@@ -146,11 +167,26 @@ public class LeagueMenu
         }
         if (account.equals(checkA)){
             userName = JOptionPane.showInputDialog(null,"Enter username");
-            password = JOptionPane.showInputDialog(null,"Enter password");
+			password = JOptionPane.showInputDialog(null,"Enter password");
             verifyLogin(userName,password);
         }else{ 
-            userName = JOptionPane.showInputDialog(null,"Please enter your desired username");
-            password = JOptionPane.showInputDialog(null,"Please enter your desired password");
+          	do {
+				userName = JOptionPane.showInputDialog(null,"Please enter your desired username");
+			if (userName.matches("^[a-zA-Z0-9]*$")) {
+				userName = userName;
+			} else {
+				JOptionPane.showMessageDialog(null,"Only letters and digits allowed for username");
+			}
+			} while (!userName.matches("^[a-zA-Z0-9]*$"));
+            do {
+			password = JOptionPane.showInputDialog(null,"Please enter your desired password");
+			if (password.matches("^[a-zA-Z0-9]*$")) {
+				password = password;
+			} else {
+				JOptionPane.showMessageDialog(null,"Only letters and digits allowed for password");
+			}
+			} while (!password.matches("^[a-zA-Z0-9]*$"));		
+		}	
             findAdminNum = new Scanner(accountInfo);
             while(findAdminNum.hasNext()) {
                  findAdminNum.next();
@@ -159,11 +195,12 @@ public class LeagueMenu
             findAdminNum.close();
             String accountDetails = newAdminNum + "," + userName +"," + password;
             pw.println(accountDetails);     
-        }
-        pw.close();
-    }
+			pw.close();
+		}
+        
     
-    public static void verifyLogin(String userName, String password) {
+    
+    public static void verifyLogin(String userName, String password) throws IOException {
         boolean found = false;
         String tempUser = "";
         String tempPass = "";
@@ -171,7 +208,7 @@ public class LeagueMenu
         int i = 0;
         if (accountInfo.length() == 0) {
             JOptionPane.showMessageDialog(null,"No Accounts have been created yet");
-            System.exit(0);
+			login();
         } else {    
             try { 
                 x = new Scanner(accountInfo);//reads file
@@ -222,9 +259,7 @@ public class LeagueMenu
                     }
                 }
             }
-            catch(Exception e)
-            {
-            }
-        }
-    }
+            catch(Exception e) {} 
+		}
+	}
 }
