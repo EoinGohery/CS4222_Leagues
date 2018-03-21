@@ -14,7 +14,7 @@ public class LeagueMenu {
 	private static File teamInfo = new File ("teamInfo.txt");
     
 	public static void main(String[] args) throws IOException {
-      login();
+      verifyLogin();
       boolean main = true;
       while (main) {
           boolean sub = true;
@@ -32,9 +32,9 @@ public class LeagueMenu {
                     addResults();
                 }else if(subSection =="View Teams") {
 					viewTeams();
-				}else if(subSection =="View Leagues") {
+				}/*else if(subSection =="View Leagues") {
 					viewLeagues();
-				}else  {
+				*/else  {
                     sub = false;
                 }
             }
@@ -145,17 +145,11 @@ public class LeagueMenu {
         
     }
     
-   public static void createLogin() throws IOException{
-        String UserName,password;
-		UserName = JOptionPane.showInputDialog("Please enter desired username");
-		password = JOptionPane.showInputDialog("Please enter desired password");
-		
-		
-    
-    
-    public static void verifyLogin(String userName, String password) throws IOException  {
-    String userName   = "",      userPassword   = "";
-	File usersFile = new File("userInfo.txt");
+    public static void verifyLogin() throws IOException  {
+	String userName   = "",      userPassword   = "";
+	String newUser = "";
+	FileWriter fw = new FileWriter(accountInfo,true);
+	PrintWriter pw3 = new PrintWriter(fw);
 	ArrayList<String> userNamesAndPasswords = new ArrayList<String>();
 	ArrayList<String> allUserDetails = new ArrayList<String>();
 	Scanner in;
@@ -166,12 +160,45 @@ public class LeagueMenu {
     String message3 = "Invalid input, please re-try";
 	String message4 = "Invalid input, no more attempts";
     int chance = 1;
+	int createdAdminNumber = 0;
+	int selectedOption;
     int adminNumber, position;
     boolean validInput  = false, validAccessDetails = false;
 	String aUser = "", tempUserDetails;
-	if (usersFile.exists())
+
+	if(accountInfo.length() == 0) {
+		userName = JOptionPane.showInputDialog("Please enter desired username");
+		userPassword = JOptionPane.showInputDialog("Please enter desired password");
+		adminNumber = 1;
+		newUser = (userName + "," + userPassword + "," + adminNumber);
+		pw3.println(newUser);
+		System.out.println("Login Created, relaunch");
+		pw3.close();
+		System.exit(0);
+	}
+	selectedOption = JOptionPane.showConfirmDialog(null,"Have you already created an account?","LOGIN",JOptionPane.YES_NO_OPTION);
+	 if (selectedOption == JOptionPane.NO_OPTION) {
+		userName = JOptionPane.showInputDialog("Please enter desired username");
+		userPassword = JOptionPane.showInputDialog("Please enter desired password");
+		in = new Scanner(accountInfo);
+		while(in.hasNext()) 
+		{
+			lineFromFile = in.nextLine();
+			fileElements = lineFromFile.split(",");
+			createdAdminNumber = ((Integer.parseInt(fileElements[2])) + 1);
+			
+		}	
+		in.close();
+		newUser = (userName + "," + userPassword + "," + createdAdminNumber);
+		pw3.println(newUser);
+		JOptionPane.showMessageDialog(null,"Login Created, relaunch");
+		pw3.close();
+		System.exit(0);
+		}
+	
+	else if (selectedOption == JOptionPane.YES_OPTION)
 	{
-	  in = new Scanner(usersFile);	
+	  in = new Scanner(accountInfo);	
 	  while(in.hasNext())
 	  {		  
 	    lineFromFile = in.nextLine();
@@ -208,7 +235,7 @@ public class LeagueMenu {
 			 else
 			 {
                JOptionPane.showMessageDialog(null, message4);
-			   validInput = true;
+			   System.exit(0);
 			 }
 		  }
 		}
@@ -224,9 +251,13 @@ public class LeagueMenu {
       tempUserDetails = allUserDetails.get(position);	  
 	  fileElements    = tempUserDetails.split(",");
       adminNumber     = Integer.parseInt(fileElements[2]);	  
-	  System.out.println("Hello " + adminNumber);
+	  currentAdminNum = adminNumber;
+	  System.out.println("Hello " + userName + currentAdminNum);
+	  
 	}	
 	else
 	  System.out.print("Goodbye");
-	}
+	}	
 }
+
+ 
