@@ -11,9 +11,13 @@ public class LeagueMenu {
     private static int currentAdminNum;
 	private static File accountInfo = new File ("userInfo.txt"); 
 	private static File leagueInfo = new File ("leagueInfo.txt");
-    
+	public static ArrayList<ArrayList<String>>  teams;
+	public static ArrayList<ArrayList<Integer>> fixtures;	
+	public static ArrayList<ArrayList<Integer>> results;
+	public static int [][] leaderBoard;
+	
 	public static void main(String[] args) throws IOException {
-      verifyLogin();
+	  verifyLogin();
       boolean main = true;
       while (main) {
           boolean sub = true;
@@ -41,8 +45,8 @@ public class LeagueMenu {
             main = false;
       }
       JOptionPane.showMessageDialog(null, "You have been logged out");
-      System.exit(0);
-    }
+     System.exit(0);
+	}
 	
 	public static int checkAmmountOfLeagues() throws IOException {
 		int leagueCounter = 1;
@@ -183,7 +187,8 @@ public class LeagueMenu {
 	int leagueNumber = checkAmmountOfLeagues();
 	String lineFromFile;
 	String fileElements[];
-	in = new Scanner(leagueNumber + "_participants.txt");
+	File x = new File (leagueNumber + "_participants.txt");
+	in = new Scanner(x);
     while (in.hasNext())
     {
       lineFromFile = in.nextLine();
