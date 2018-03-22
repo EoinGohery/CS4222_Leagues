@@ -11,9 +11,13 @@ public class LeagueMenu {
     private static int currentAdminNum;
 	private static File accountInfo = new File ("userInfo.txt"); 
 	private static File leagueInfo = new File ("leagueInfo.txt");
-    
+	public static ArrayList<ArrayList<String>>  teams;
+	public static ArrayList<ArrayList<Integer>> fixtures;	
+	public static ArrayList<ArrayList<Integer>> results;
+	public static int [][] leaderBoard;
+	
 	public static void main(String[] args) throws IOException {
-      verifyLogin();
+	  verifyLogin();
       boolean main = true;
       while (main) {
           boolean sub = true;
@@ -31,9 +35,10 @@ public class LeagueMenu {
                     addResults();
                 }else if(subSection =="View Teams") {
 					viewTeams();
-				}/*else if(subSection =="View Leagues") {
+				}else if(subSection =="View Leagues") {
 					viewLeagues();
-				*/else  {
+				}
+				else  {
                     sub = false;
                 }
             }
@@ -41,8 +46,8 @@ public class LeagueMenu {
             main = false;
       }
       JOptionPane.showMessageDialog(null, "You have been logged out");
-      System.exit(0);
-    }
+     System.exit(0);
+	}
 	
 	public static int checkAmmountOfLeagues() throws IOException {
 		int leagueCounter = 1;
@@ -99,7 +104,7 @@ public class LeagueMenu {
 		pw.println(LeagueDetails);
 		pw.close();
 		pw2.close();
-		//generateFixtures();
+		generateFixtures();
 	
     }
 	
@@ -183,7 +188,8 @@ public class LeagueMenu {
 	int leagueNumber = checkAmmountOfLeagues();
 	String lineFromFile;
 	String fileElements[];
-	in = new Scanner(leagueNumber + "_participants.txt");
+	File x = new File (leagueNumber + "_participants.txt");
+	in = new Scanner(x);
     while (in.hasNext())
     {
       lineFromFile = in.nextLine();
@@ -207,14 +213,25 @@ public class LeagueMenu {
       
     }
 	
-	public static void viewLeagues(String[] leagueList) {
-		String list = (String)(JOptionPane.showInputDialog(null, "Leagues","",JOptionPane.QUESTION_MESSAGE, null, leagueList, leagueList[0]));
+	public static void viewLeagues() throws IOException {
+		Scanner in;
+		String lineFromFile;
+		
+		in = new Scanner(leagueInfo);
+		while(in.hasNext())
+		{
+			lineFromFile = in.nextLine();
+			System.out.println(lineFromFile);
+			
+		}
+		in.close();
 	}
 	
 	
 	
 	
-	public static void viewTeams() throws IOException {
+	public static void viewTeams() throws IOException{
+		
 		 String inputLeagueName = JOptionPane.showInputDialog(null,"Enter the league you would like to view");
 		int tempLeagueNum, tempAdminNum;
         String tempLeagueName;
@@ -247,16 +264,9 @@ public class LeagueMenu {
 		 }
 	
 		}
-	}
-            
-            
-            
-        
-    
 		
 		
-		
-    
+    }
     public static void viewFixtures() {
         
     }
@@ -378,5 +388,4 @@ public class LeagueMenu {
 	else
 	  System.out.print("Goodbye");
 	}	
-
-	}
+}
