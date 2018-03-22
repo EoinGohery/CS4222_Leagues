@@ -9,10 +9,10 @@ public class LeagueMenu {
     private static Scanner z;
     private static Scanner findAdminNum;
     private static int currentAdminNum;
-    private static File accountInfo = new File ("userInfo.txt"); 
-    private static File leagueInfo = new File ("leagueInfo.txt");
+	private static File accountInfo = new File ("userInfo.txt"); 
+	private static File leagueInfo = new File ("leagueInfo.txt");
     
-    public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException {
       verifyLogin();
       boolean main = true;
       while (main) {
@@ -30,10 +30,10 @@ public class LeagueMenu {
                 }else if(subSection=="add Results") {
                     addResults();
                 }else if(subSection =="View Teams") {
-                    viewTeams();
-                }/*else if(subSection =="View Leagues") {
-                    viewLeagues();
-                */else  {
+					viewTeams();
+				}/*else if(subSection =="View Leagues") {
+					viewLeagues();
+				*/else  {
                     sub = false;
                 }
             }
@@ -43,137 +43,103 @@ public class LeagueMenu {
       JOptionPane.showMessageDialog(null, "You have been logged out");
       System.exit(0);
     }
-  
-    
-    public static void Leagues(int leagueNumber,String leagueName) {
-        String[] leagueList = new String [leagueNumber];
-        for (int i = 0;i < leagueNumber;i++) {
-            leagueList[i] = leagueName;
-        }   
-    }
-    
-    public static int checkAmmountOfLeagues() throws IOException {
-        int leagueCounter = 0;
-        String lineFromFile;
-        String fileElements[];
-        Scanner leagueChecker = new Scanner(leagueInfo);
-        while (leagueChecker.hasNext())
-        { 
-            lineFromFile = leagueChecker.nextLine();
-            fileElements = lineFromFile.split(",");
-            leagueCounter =Integer.parseInt(fileElements[0]);
-        }
-         return leagueCounter;
-    }       
+	
+	public static int checkAmmountOfLeagues() throws IOException {
+		int leagueCounter = 1;
+		String lineFromFile;
+		String fileElements[];
+		Scanner leagueChecker = new Scanner(leagueInfo);
+		
+			while (leagueChecker.hasNext())
+			{ 
+			lineFromFile = leagueChecker.nextLine();
+			fileElements = lineFromFile.split(",");
+			leagueCounter =Integer.parseInt(fileElements[0]);
+			}
+		
+		
 
-    public static void createLeague() throws IOException {
-        //JOptionPane, asks for League name and number of teams, automatically asigns league number based on how many already exist
-        // JOptionPane, asks to input team names corresponding to number of teams
-        leagueInfo.createNewFile();
-        int numberOfTeams, numberOfMatches;
-        String leagueName;
-        int leagueNumber = checkAmmountOfLeagues();
-        String adminNumber = "admin";
-        String fileTeamNames = "";
-        String teamNames = ""; // The string for listing teams, in line 57 the teams are added 1 by 1.
-        FileWriter outputStream = new FileWriter(leagueInfo,true);
-        FileWriter outputStream2 = new FileWriter((leagueNumber+1) + "_participants.txt",true);
-        
-        PrintWriter pw = new PrintWriter(outputStream);
-        PrintWriter pw2 = new PrintWriter(outputStream2);
-        
-        leagueName = (String) JOptionPane.showInputDialog(null,"Please enter League Name","",JOptionPane.QUESTION_MESSAGE);
-        numberOfTeams = Integer.parseInt(JOptionPane.showInputDialog(null,leagueName + "\n How many teams are to be in the league?",JOptionPane.INFORMATION_MESSAGE));
-        numberOfMatches = Integer.parseInt(JOptionPane.showInputDialog(null,leagueName + "\n How many matches are to be played?",JOptionPane.INFORMATION_MESSAGE));
-        leagueNumber++;
-        generateFixtures(numberOfTeams, numberOfMatches);
-        String[] leagueTeamNames = new String[numberOfTeams];
-        for (int i = 0; i < numberOfTeams;i++) {
-        
-            leagueTeamNames[i] = (String) (JOptionPane.showInputDialog(null,"("+ (i + 1) + ")" + " Enter team name"));
-            if (leagueTeamNames[i].matches(".*[^a-zA-Z].*")) { //Only Alphabetical letters
-                JOptionPane.showMessageDialog(null,"Team names may only contain letters!");
-                i--; //If input is wrong then then the loop doesn't go forward.
-                continue;
-            }
-            teamNames += (i + 1) + ". " + leagueTeamNames[i] + "\n"; // Format for JOptionPane message
-            fileTeamNames = (i + 1) + "," + leagueTeamNames[i]; // Actual format to be written to file
-            pw2.println(fileTeamNames);
-        }
-        JOptionPane.showMessageDialog(null,teamNames); // List teams
-        String LeagueDetails = leagueNumber + "," + leagueName + "," + currentAdminNum;
-        pw.println(LeagueDetails);
-        pw.close();
-        pw2.close();
-    
+		 return leagueCounter;
+	}		
+
+	public static void createLeague() throws IOException {
+		//JOptionPane, asks for League name and number of teams, automatically asigns league number based on how many already exist
+		// JOptionPane, asks to input team names corresponding to number of teams
+		leagueInfo.createNewFile();
+		String leagueName;
+		int leagueNumber = checkAmmountOfLeagues();
+		int numberOfTeams;
+		String adminNumber = "admin";
+		String fileTeamNames = "";
+		String teamNames = ""; // The string for listing teams, in line 57 the teams are added 1 by 1.
+		FileWriter outputStream = new FileWriter(leagueInfo,true);
+		FileWriter outputStream2 = new FileWriter((leagueNumber+1) + "_participants.txt",true);
+		
+		PrintWriter pw = new PrintWriter(outputStream);
+		PrintWriter pw2 = new PrintWriter(outputStream2);
+		
+		leagueName = (String) JOptionPane.showInputDialog(null,"Please enter League Name","",JOptionPane.QUESTION_MESSAGE);
+		numberOfTeams = Integer.parseInt(JOptionPane.showInputDialog(null,leagueName + "\n How many teams are to be in the league?",JOptionPane.INFORMATION_MESSAGE));
+		leagueNumber++;
+		String[] leagueTeamNames = new String[numberOfTeams];
+		for (int i = 0; i < numberOfTeams;i++) {
+		
+		leagueTeamNames[i] = (String) (JOptionPane.showInputDialog(null,"("+ (i + 1) + ")" + " Enter team name",JOptionPane.INFORMATION_MESSAGE));
+		if (leagueTeamNames[i].matches(".*[^a-zA-Z].*")) { //Only Alphabetical letters
+			JOptionPane.showMessageDialog(null,"Team names may only contain letters!");
+			i--; //If input is wrong then then the loop doesn't go forward.
+			continue;
+		}
+		teamNames += (i + 1) + ". " + leagueTeamNames[i] + "\n"; // Format for JOptionPane message
+		fileTeamNames = (i + 1) + "," + leagueTeamNames[i]; // Actual format to be written to file
+		pw2.println(fileTeamNames);
+		}
+		JOptionPane.showMessageDialog(null,teamNames); // List teams
+		String LeagueDetails = leagueNumber + "," + leagueName + "," + currentAdminNum;
+		pw.println(LeagueDetails);
+		pw.close();
+		pw2.close();
+		generateFixtures();
+	
     }
-    
-    
-    
-  
-    public static void viewLeaderboard() {
-      
-    }
-    
-    public static void viewLeagues(String[] leagueList) {
-        String list = (String)(JOptionPane.showInputDialog(null, "Leagues","",JOptionPane.QUESTION_MESSAGE, null, leagueList, leagueList[0]));
-    }
-    
-    
-    
-    
-    public static void viewTeams() {
-        boolean found = false;
-        String tempLeagueName = "";
-        String tempLeagueNumber = "";
-        String checkLeagueNumber = "";
-        int i = 0;
-        if (leagueInfo.length() == 0) {
-            JOptionPane.showMessageDialog(null,"No leagues have been created yet");
-        
-        } else {
-            try{
-                checkLeagueNumber = (String)JOptionPane.showInputDialog(null,"Please enter league number");
-                x = new Scanner(leagueInfo);
-                x.useDelimiter("[,\n]");
-                while(x.hasNext() && !found) {
-                    tempLeagueNumber = x.next();
-                    if(tempLeagueNumber.trim().equals(checkLeagueNumber.trim())) {
-                    found = true;
-                    }   
-                }               
-            }
-            catch(Exception e){}
-        }   
-    }
-    
-    public static void generateFixtures(int teams, int numberOfMatches) throws IOException  {
-    int matchNumber, homeTeamNumber, awayTeamNumber, even, odd;
-    int leagueNumber = checkAmmountOfLeagues();
-    FileWriter outputStream = new FileWriter((leagueNumber+1) + "_fixtures.txt",true);
-    PrintWriter pw = new PrintWriter(outputStream);
-    String selection;
-    String [] fixtures;
-    String [] revisedFixtures;
+	
+	public static void generateFixtures() throws IOException  {
+    int numberOfTeams, totalNumberOfRounds, numberOfMatchesPerRound;
+    int roundNumber, matchNumber, homeTeamNumber, awayTeamNumber, even, odd;
+    boolean additionalTeamIncluded = false;
+    int selection;
+    String [][] fixtures;
+    String [][] revisedFixtures;
     String []   elementsOfFixture;
     String fixtureAsText;
+    selection = getNumberOfTeams();
 
-    if (teams != 0)
-    { 
-       fixtures = new String[numberOfMatches];  
-       Random r = new Random();
-       for (matchNumber = 0; matchNumber < numberOfMatches; matchNumber++) {
-                homeTeamNumber = (r.nextInt(teams)+1);
-                awayTeamNumber = (r.nextInt(teams)+1);
-                if (homeTeamNumber == awayTeamNumber) {
-                    matchNumber--;
-                }else {
-                    fixtures[matchNumber] = (homeTeamNumber + 1) + "," + (awayTeamNumber + 1);
-                }
+    if (selection != 0)
+    {
+       numberOfTeams = selection; 
+       if (numberOfTeams % 2 == 1)
+       {
+	     numberOfTeams++;
+	     additionalTeamIncluded = true;
        }
-	   revisedFixtures = new String[numberOfMatches];
+	   totalNumberOfRounds     = numberOfTeams - 1;
+       numberOfMatchesPerRound = numberOfTeams / 2;
+       fixtures = new String[totalNumberOfRounds][numberOfMatchesPerRound];  
+        
+       for (roundNumber = 0; roundNumber < totalNumberOfRounds; roundNumber++) 
+       {
+         for (matchNumber = 0; matchNumber < numberOfMatchesPerRound; matchNumber++) 
+	     {
+           homeTeamNumber = (roundNumber + matchNumber) % (numberOfTeams - 1);
+		   awayTeamNumber = (numberOfTeams - 1 - matchNumber + roundNumber) % (numberOfTeams - 1);
+           if (matchNumber == 0) 
+             awayTeamNumber = numberOfTeams - 1;
+		   fixtures[roundNumber][matchNumber] = (homeTeamNumber + 1) + " v " + (awayTeamNumber + 1);
+         }
+       } 
+	   revisedFixtures = new String[totalNumberOfRounds][numberOfMatchesPerRound];
        even = 0;
-       odd = teams / 2;
+       odd = numberOfTeams / 2;
        for (int i = 0; i < fixtures.length; i++) 
        {
          if (i % 2 == 0) 	
@@ -183,13 +149,76 @@ public class LeagueMenu {
        }
        fixtures = revisedFixtures;
         
-         for (matchNumber = 0; matchNumber < numberOfMatches; matchNumber++) {
-           pw.println((matchNumber + 1) + ","  + fixtures[matchNumber] + "\t");
-        }
-         pw.close();
+       for (roundNumber = 0; roundNumber < fixtures.length; roundNumber++) 
+       {
+         if (roundNumber % 2 == 1) 
+	     {
+	       fixtureAsText = fixtures[roundNumber][0];
+	       elementsOfFixture = fixtureAsText.split(" v ");
+           fixtures[roundNumber][0] = elementsOfFixture[1] + " v " + elementsOfFixture[0];
+	     }
+       } 
+	   for (roundNumber = 0; roundNumber < totalNumberOfRounds; roundNumber++) 
+       {
+         System.out.println("Round " + (roundNumber + 1) + "\t\t");  
+         for (matchNumber = 0; matchNumber < numberOfMatchesPerRound; matchNumber++) 
+           System.out.println("\tMatch " + (matchNumber + 1) + ": " 
+                          + fixtures[roundNumber][matchNumber] + "\t");
+         System.out.println();
+       }		  
+       System.out.print("\nYou will have to use the mirror image");
+       System.out.println(" of these fixtures for return fixtures.");
+       if (additionalTeamIncluded)
+	       System.out.println("\nSince you had " + (numberOfTeams - 1) 
+            + " teams at the outset (uneven number), fixtures "
+	     	+ "against team number " 
+           	+ numberOfTeams + " are byes.");
     }
-  } 	
+  }
+  
+	public static int getNumberOfTeams() throws IOException {
+  
+    int numberOfnumberOfTeams = 0;
+    Scanner in;
+	int leagueNumber = checkAmmountOfLeagues();
+	String lineFromFile;
+	String fileElements[];
+	in = new Scanner(leagueNumber + "_participants.txt");
+    while (in.hasNext())
+    {
+      lineFromFile = in.nextLine();
+	  fileElements = lineFromFile.split(",");
+		numberOfnumberOfTeams = Integer.parseInt(fileElements[0]);
+	}  
+	    if (numberOfnumberOfTeams < 2) {
+	      JOptionPane.showMessageDialog(null,"Error. Team number < 2", "Error. Team number < 2", 2);
+		}
+		in.close();
+		return numberOfnumberOfTeams; 
+      }
+      
     
+  	  
+	
+	
+	
+  
+    public static void viewLeaderboard() {
+      
+    }
+	
+	public static void viewLeagues(String[] leagueList) {
+		String list = (String)(JOptionPane.showInputDialog(null, "Leagues","",JOptionPane.QUESTION_MESSAGE, null, leagueList, leagueList[0]));
+	}
+	
+	
+	
+	
+	public static void viewTeams() {
+		
+		
+		
+    }
     public static void viewFixtures() {
         
     }
@@ -199,117 +228,116 @@ public class LeagueMenu {
     }
     
     public static void verifyLogin() throws IOException  {
-    String userName   = "",      userPassword   = "";
-    String newUser = "";
-    FileWriter fw = new FileWriter(accountInfo,true);
-    PrintWriter pw3 = new PrintWriter(fw);
-    ArrayList<String> userNamesAndPasswords = new ArrayList<String>();
-    ArrayList<String> allUserDetails = new ArrayList<String>();
-    Scanner in;
-    String lineFromFile;
-    String fileElements[];
-    String message1 = "Please enter your username";
-    String message2 = "Please enter your password";
+	String userName   = "",      userPassword   = "";
+	String newUser = "";
+	FileWriter fw = new FileWriter(accountInfo,true);
+	PrintWriter pw3 = new PrintWriter(fw);
+	ArrayList<String> userNamesAndPasswords = new ArrayList<String>();
+	ArrayList<String> allUserDetails = new ArrayList<String>();
+	Scanner in;
+	String lineFromFile;
+	String fileElements[];
+	String message1 = "Please enter your username";
+	String message2 = "Please enter your password";
     String message3 = "Invalid input, please re-try";
-    String message4 = "Invalid input, no more attempts";
+	String message4 = "Invalid input, no more attempts";
     int chance = 1;
-    int createdAdminNumber = 0;
-    int selectedOption;
+	int createdAdminNumber = 0;
+	int selectedOption;
     int adminNumber, position;
     boolean validInput  = false, validAccessDetails = false;
-    String aUser = "", tempUserDetails;
+	String aUser = "", tempUserDetails;
 
-    if(accountInfo.length() == 0) {
-        userName = JOptionPane.showInputDialog("Please enter desired username");
-        userPassword = JOptionPane.showInputDialog("Please enter desired password");
-        adminNumber = 1;
-        newUser = (userName + "," + userPassword + "," + adminNumber);
-        pw3.println(newUser);
-        System.out.println("Login Created, relaunch");
-        pw3.close();
-        System.exit(0);
-    }
-    selectedOption = JOptionPane.showConfirmDialog(null,"Have you already created an account?","LOGIN",JOptionPane.YES_NO_OPTION);
-     if (selectedOption == JOptionPane.NO_OPTION) {
-        userName = JOptionPane.showInputDialog("Please enter desired username");
-        userPassword = JOptionPane.showInputDialog("Please enter desired password");
-        in = new Scanner(accountInfo);
-        while(in.hasNext()) 
-        {
-            lineFromFile = in.nextLine();
-            fileElements = lineFromFile.split(",");
-            createdAdminNumber = ((Integer.parseInt(fileElements[2])) + 1);
-            
-        }   
-        in.close();
-        newUser = (userName + "," + userPassword + "," + createdAdminNumber);
-        pw3.println(newUser);
-        JOptionPane.showMessageDialog(null,"Login Created, relaunch");
-        pw3.close();
-        System.exit(0);
-        }
-    
-    else if (selectedOption == JOptionPane.YES_OPTION)
-    {
-      in = new Scanner(accountInfo);    
-      while(in.hasNext())
-      {       
-        lineFromFile = in.nextLine();
+	if(accountInfo.length() == 0) {
+		userName = JOptionPane.showInputDialog("Please enter desired username");
+		userPassword = JOptionPane.showInputDialog("Please enter desired password");
+		adminNumber = 1;
+		newUser = (userName + "," + userPassword + "," + adminNumber);
+		pw3.println(newUser);
+		System.out.println("Login Created, relaunch");
+		pw3.close();
+		System.exit(0);
+	}
+	selectedOption = JOptionPane.showConfirmDialog(null,"Have you already created an account?","LOGIN",JOptionPane.YES_NO_OPTION);
+	 if (selectedOption == JOptionPane.NO_OPTION) {
+		userName = JOptionPane.showInputDialog("Please enter desired username");
+		userPassword = JOptionPane.showInputDialog("Please enter desired password");
+		in = new Scanner(accountInfo);
+		while(in.hasNext()) 
+		{
+			lineFromFile = in.nextLine();
+			fileElements = lineFromFile.split(",");
+			createdAdminNumber = ((Integer.parseInt(fileElements[2])) + 1);
+			
+		}	
+		in.close();
+		newUser = (userName + "," + userPassword + "," + createdAdminNumber);
+		pw3.println(newUser);
+		JOptionPane.showMessageDialog(null,"Login Created, relaunch");
+		pw3.close();
+		System.exit(0);
+		}
+	
+	else if (selectedOption == JOptionPane.YES_OPTION)
+	{
+	  in = new Scanner(accountInfo);	
+	  while(in.hasNext())
+	  {		  
+	    lineFromFile = in.nextLine();
         fileElements = lineFromFile.split(",");
         userNamesAndPasswords.add(fileElements[0] + "," + fileElements[1]);
-        allUserDetails.add(lineFromFile);     
-      }
-      in.close();
-    }
-    else
-    System.out.println("User file not found");    
+        allUserDetails.add(lineFromFile);	  
+	  }
+	  in.close();
+	}
+	else
+	  System.out.println("User file not found");	
 
 
-        while((!(validInput)) && (chance <= 3))
-        {
-            userName = JOptionPane.showInputDialog(null, message1);
-            if (userName != null)
-            {
-                userPassword = JOptionPane.showInputDialog(null, message2);  
-                if (userPassword != null)
-                {
-          aUser = userName + "," + userPassword;    
-          if (userNamesAndPasswords.contains(aUser))
-          {
-             validInput         = true;
-             validAccessDetails = true;
-          }
-          else
-          {
-             chance += 1; 
-             if (chance <= 3)
-               JOptionPane.showMessageDialog(null, message3);
-             else
-             {
-               JOptionPane.showMessageDialog(null, message4);
-               System.exit(0);
-             }
-          }
-        }
-        else
-          validInput = true;
-      }
-      else
-        validInput = true;
-    }
     
-
-    if (validAccessDetails)
+    while((!(validInput)) && (chance <= 3))
     {
-      position        = userNamesAndPasswords.indexOf(aUser);
-      tempUserDetails = allUserDetails.get(position);     
-      fileElements    = tempUserDetails.split(",");
-      adminNumber     = Integer.parseInt(fileElements[2]);    
-      currentAdminNum = adminNumber;
-      System.out.println("Hello " + userName + currentAdminNum);
-      
-    }   
-    else
-      System.out.print("Goodbye");
-    }   
+	  userName = JOptionPane.showInputDialog(null, message1);
+	  if (userName != null)
+	  {
+	    userPassword = JOptionPane.showInputDialog(null, message2);  
+		if (userPassword != null)
+		{
+		  aUser = userName + "," + userPassword;	
+		  if (userNamesAndPasswords.contains(aUser))
+		  {
+		     validInput         = true;
+			 validAccessDetails = true;
+		  }
+		  else
+		  {
+  		     chance += 1; 
+			 if (chance <= 3)
+			   JOptionPane.showMessageDialog(null, message3);
+			 else
+			 {
+               JOptionPane.showMessageDialog(null, message4);
+			   System.exit(0);
+			 }
+		  }
+		}
+		else
+		  validInput = true;
+	  }
+	  else
+	    validInput = true;
+    }
+	if (validAccessDetails)
+	{
+	  position        = userNamesAndPasswords.indexOf(aUser);
+      tempUserDetails = allUserDetails.get(position);	  
+	  fileElements    = tempUserDetails.split(",");
+      adminNumber     = Integer.parseInt(fileElements[2]);	  
+	  currentAdminNum = adminNumber;
+	  System.out.println("Hello " + userName + currentAdminNum);
+	  
+	}	
+	else
+	  System.out.print("Goodbye");
+	}	
 }
