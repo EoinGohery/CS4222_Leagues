@@ -81,12 +81,12 @@ public class Leagues{
 		PrintWriter pw = new PrintWriter(outputStream);
 		PrintWriter pw2 = new PrintWriter(outputStream2);
 
-		leagueName = (String) JOptionPane.showInputDialog(null,"Please enter League Name","",JOptionPane.QUESTION_MESSAGE);
-		numberOfTeams = Integer.parseInt(JOptionPane.showInputDialog(null,leagueName + "\n How many teams are to be in the league?",JOptionPane.INFORMATION_MESSAGE));
+		leagueName = (String) JOptionPane.showInputDialog(null,"Please enter League Name","");
+		numberOfTeams = Integer.parseInt(JOptionPane.showInputDialog(null,leagueName + "\n How many teams are to be in the league?"));
 		String[] leagueTeamNames = new String[numberOfTeams];
 		for (int i = 0; i < numberOfTeams;i++) {
 
-		leagueTeamNames[i] = (String) (JOptionPane.showInputDialog(null,"("+ (i + 1) + ")" + " Enter team name",JOptionPane.INFORMATION_MESSAGE));
+		leagueTeamNames[i] = (String) (JOptionPane.showInputDialog(null,"("+ (i + 1) + ")" + " Enter team name"));
 		if (leagueTeamNames[i].matches(".*[^a-zA-Z].*")) { //Only Alphabetical letters
 			JOptionPane.showMessageDialog(null,"Team names may only contain letters!");
 			i--; //If input is wrong then then the loop doesn't go forward.
@@ -102,19 +102,18 @@ public class Leagues{
 		pw.close();
 		pw2.close();
 		generateFixtures();
-
-    }
+  }
 
 	public static void generateFixtures() throws IOException  {
     int numberOfTeams, totalNumberOfRounds, numberOfMatchesPerRound;
     int roundNumber, matchNumber, homeTeamNumber = 0, awayTeamNumber = 0, even, odd;
     boolean additionalTeamIncluded = false;
-	int leagueNumber = checkAmmountOfLeagues();
-	File f = new File(leagueNumber + "_fixtures.txt");
-	FileWriter fixt = new FileWriter(f,true);
-	PrintWriter pwFixt = new PrintWriter(fixt);
+	  int leagueNumber = checkAmmountOfLeagues();
+	  File f = new File(leagueNumber + "_fixtures.txt");
+	  FileWriter fixt = new FileWriter(f,true);
+  	PrintWriter pwFixt = new PrintWriter(fixt);
     int selection;
-	int matchCounter = 1;
+	  int matchCounter = 1;
     String [][] fixtures;
     String [][] revisedFixtures;
     String []   elementsOfFixture;
@@ -124,52 +123,42 @@ public class Leagues{
     if (selection != 0)
     {
        numberOfTeams = selection;
-       if (numberOfTeams % 2 == 1)
-       {
-	     numberOfTeams++;
-	     additionalTeamIncluded = true;
+       if (numberOfTeams % 2 == 1) {
+	        numberOfTeams++;
+	        additionalTeamIncluded = true;
        }
-	   totalNumberOfRounds     = numberOfTeams - 1;
-       numberOfMatchesPerRound = numberOfTeams / 2;
-       fixtures = new String[totalNumberOfRounds][numberOfMatchesPerRound];
+	        totalNumberOfRounds     = numberOfTeams - 1;
+          numberOfMatchesPerRound = numberOfTeams / 2;
+          fixtures = new String[totalNumberOfRounds][numberOfMatchesPerRound];
+          for (roundNumber = 0; roundNumber < totalNumberOfRounds; roundNumber++) {
+            for (matchNumber = 0; matchNumber < numberOfMatchesPerRound; matchNumber++) {
+              homeTeamNumber = (roundNumber + matchNumber) % (numberOfTeams - 1);
+		          awayTeamNumber = (numberOfTeams - 1 - matchNumber + roundNumber) % (numberOfTeams - 1);
+              if (matchNumber == 0)
+                awayTeamNumber = numberOfTeams - 1;
+		            fixtures[roundNumber][matchNumber] = (homeTeamNumber + 1) + "," + (awayTeamNumber + 1);
 
-       for (roundNumber = 0; roundNumber < totalNumberOfRounds; roundNumber++)
-       {
-
-         for (matchNumber = 0; matchNumber < numberOfMatchesPerRound; matchNumber++)
-	     {
-           homeTeamNumber = (roundNumber + matchNumber) % (numberOfTeams - 1);
-		   awayTeamNumber = (numberOfTeams - 1 - matchNumber + roundNumber) % (numberOfTeams - 1);
-           if (matchNumber == 0)
-             awayTeamNumber = numberOfTeams - 1;
-		   fixtures[roundNumber][matchNumber] = (homeTeamNumber + 1) + "," + (awayTeamNumber + 1);
-
-         }
-       }
-	   revisedFixtures = new String[totalNumberOfRounds][numberOfMatchesPerRound];
-       even = 0;
-       odd = numberOfTeams / 2;
-       for (int i = 0; i < fixtures.length; i++)
-       {
-         if (i % 2 == 0)
-           revisedFixtures[i] = fixtures[even++];
-         else
-           revisedFixtures[i] = fixtures[odd++];
-       }
-       fixtures = revisedFixtures;
-
-       for (roundNumber = 0; roundNumber < fixtures.length; roundNumber++)
-       {
-         if (roundNumber % 2 == 1)
-	     {
-	       fixtureAsText = fixtures[roundNumber][0];
-	       elementsOfFixture = fixtureAsText.split(",");
-           fixtures[roundNumber][0] = elementsOfFixture[1] + "," + elementsOfFixture[0];
-	     }
-       }
-	   for(int x = 0; x<fixtures.length; x++) {
-			for(int y = 0; y < fixtures[x].length; y++)
-			{
+            }
+          }
+	        revisedFixtures = new String[totalNumberOfRounds][numberOfMatchesPerRound];
+          even = 0;
+          odd = numberOfTeams / 2;
+          for (int i = 0; i < fixtures.length; i++) {
+            if (i % 2 == 0)
+              revisedFixtures[i] = fixtures[even++];
+            else
+              revisedFixtures[i] = fixtures[odd++];
+            }
+            fixtures = revisedFixtures;
+            for (roundNumber = 0; roundNumber < fixtures.length; roundNumber++) {
+              if (roundNumber % 2 == 1) {
+	               fixtureAsText = fixtures[roundNumber][0];
+	               elementsOfFixture = fixtureAsText.split(",");
+                 fixtures[roundNumber][0] = elementsOfFixture[1] + "," + elementsOfFixture[0];
+	            }
+            }
+	           for(int x = 0; x<fixtures.length; x++) {
+			            for(int y = 0; y < fixtures[x].length; y++) {
 
 			pwFixt.println(matchCounter + "," + fixtures[x][y]);
 			matchCounter++;
@@ -283,48 +272,45 @@ public class Leagues{
   public static boolean readFilesIntoArrayLists() throws IOException
   {
 
-	int	leagueNumber =Integer.parseInt(JOptionPane.showInputDialog(null, "Which league would you like to view?"));
+	   int	leagueNumber =Integer.parseInt(JOptionPane.showInputDialog(null, "Which league would you like to view?"));
+     String fileElements[];
+	   File inputFile1 = new File(leagueNumber + "_participants.txt");
+	   File inputFile2 = new File(leagueNumber + "_fixtures.txt");
+	   File inputFile3 = new File(leagueNumber + "_outcomes.txt");
+	   teams = new ArrayList<ArrayList<String>>();
+     teams.add(new ArrayList<String>());
+     teams.add(new ArrayList<String>());
 
-    String fileElements[];
-	File inputFile1 = new File(leagueNumber + "_participants.txt");
-	File inputFile2 = new File(leagueNumber + "_fixtures.txt");
-	File inputFile3 = new File(leagueNumber + "_outcomes.txt");
+     fixtures = new ArrayList<ArrayList<Integer>>();
+	   fixtures.add(new ArrayList<Integer>());
+     fixtures.add(new ArrayList<Integer>());
+     fixtures.add(new ArrayList<Integer>());
 
-	teams = new ArrayList<ArrayList<String>>();
-	teams.add(new ArrayList<String>());
-    teams.add(new ArrayList<String>());
+     results = new ArrayList<ArrayList<Integer>>();
+	   results.add(new ArrayList<Integer>());
+     results.add(new ArrayList<Integer>());
+     results.add(new ArrayList<Integer>());
 
-    fixtures = new ArrayList<ArrayList<Integer>>();
-	fixtures.add(new ArrayList<Integer>());
-    fixtures.add(new ArrayList<Integer>());
-    fixtures.add(new ArrayList<Integer>());
-
-    results = new ArrayList<ArrayList<Integer>>();
-	results.add(new ArrayList<Integer>());
-    results.add(new ArrayList<Integer>());
-    results.add(new ArrayList<Integer>());
-
-	if (inputFile1.exists() && inputFile2.exists() && inputFile3.exists())
-	{
-	  Scanner in;
-	  in = new Scanner(inputFile1);
-	  while(in.hasNext())
-	  {
-	    fileElements = (in.nextLine()).split(",");
-	    teams.get(0).add(fileElements[0]);
-	    teams.get(1).add(fileElements[1]);
-	  }
-	  in.close();
-	  in = new Scanner(inputFile2);
-	  while(in.hasNext())
-	  {
-	    fileElements = (in.nextLine()).split(",");
-	    fixtures.get(0).add(Integer.parseInt(fileElements[0]));
-	    fixtures.get(1).add(Integer.parseInt(fileElements[1]));
-	    fixtures.get(2).add(Integer.parseInt(fileElements[2]));
-	  }
-	  in.close();
-	  in = new Scanner(inputFile3);
+  	 if (inputFile1.exists() && inputFile2.exists() && inputFile3.exists()) {
+	      Scanner in;
+	      in = new Scanner(inputFile1);
+	      while(in.hasNext())
+	      {
+	         fileElements = (in.nextLine()).split(",");
+	         teams.get(0).add(fileElements[0]);
+	         teams.get(1).add(fileElements[1]);
+	      }
+	      in.close();
+	      in = new Scanner(inputFile2);
+	      while(in.hasNext())
+	      {
+	         fileElements = (in.nextLine()).split(",");
+	         fixtures.get(0).add(Integer.parseInt(fileElements[0]));
+	         fixtures.get(1).add(Integer.parseInt(fileElements[1]));
+	         fixtures.get(2).add(Integer.parseInt(fileElements[2]));
+	      }
+	      in.close();
+	      in = new Scanner(inputFile3);
 	  while(in.hasNext())
 	  {
 	    fileElements = (in.nextLine()).split(",");
@@ -459,7 +445,7 @@ public class Leagues{
       System.out.printf("%4d", leaderBoard[i][5]);
       System.out.printf("%4d", leaderBoard[i][6]);
       System.out.printf("%4d", leaderBoard[i][7]);
-	  System.out.printf("%4d", leaderBoard[i][8]);
+	    System.out.printf("%4d", leaderBoard[i][8]);
       System.out.printf("%4d", leaderBoard[i][9]);
       System.out.printf("%4d", leaderBoard[i][10]);
       System.out.printf("%4d", leaderBoard[i][11]);
