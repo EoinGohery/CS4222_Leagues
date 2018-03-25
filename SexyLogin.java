@@ -2,6 +2,7 @@ import java.util.*;
 import java.io.*;
 import javax.swing.*;
 public class LeagueMenu {
+  //test;
     private static final String[] mainMenu = { "Create League", "View and Edit", "Log Out" };
     private static final String[] subMenu = {"View Leagues", "View Teams", "View Leaderboard", "View Fixtures", "Add Results", "Back to Main Menu" };
     private static Scanner x;
@@ -9,10 +10,10 @@ public class LeagueMenu {
     private static Scanner z;
     private static Scanner findAdminNum;
     private static int currentAdminNum;
-	private static File accountInfo = new File ("userInfo.txt"); 
+	private static File accountInfo = new File ("userInfo.txt");
 	private static File leagueInfo = new File ("leagueInfo.txt");
 	private static File teamInfo = new File ("teamInfo.txt");
-    
+
 	public static void main(String[] args) throws IOException {
       verifyLogin();
       boolean main = true;
@@ -21,7 +22,7 @@ public class LeagueMenu {
           String section = (String) JOptionPane.showInputDialog(null, "Menu","",JOptionPane.QUESTION_MESSAGE, null, mainMenu, mainMenu[0]);
           if(section=="Create League") {
               createLeague();
-          }else if(section=="View and Edit") { 
+          }else if(section=="View and Edit") {
             while (sub) {
                 String subSection = (String) JOptionPane.showInputDialog(null, "Menu","",JOptionPane.QUESTION_MESSAGE, null, subMenu, subMenu[0]);
                 if(subSection=="View Leaderboard"){
@@ -38,21 +39,21 @@ public class LeagueMenu {
                     sub = false;
                 }
             }
-          }else 
+          }else
             main = false;
       }
       JOptionPane.showMessageDialog(null, "You have been logged out");
       System.exit(0);
     }
-  
-    
+
+
 	public static void Leagues(int leagueNumber,String leagueName) {
 		String[] leagueList = new String [leagueNumber];
 		for (int i = 0;i < leagueNumber;i++) {
 			leagueList[i] = leagueName;
-		}	
+		}
 	}
-	
+
 
 	public static void createLeague() throws IOException {
 		//JOptionPane, asks for League name and number of teams, automatically asigns league number based on how many already exist
@@ -68,18 +69,18 @@ public class LeagueMenu {
 		FileWriter outputStream2 = new FileWriter(teamInfo,true);
 		PrintWriter pw = new PrintWriter(outputStream);
 		PrintWriter pw2 = new PrintWriter(outputStream2);
-		
+
 		leagueName = (String) JOptionPane.showInputDialog(null,"Please enter League Name","",JOptionPane.QUESTION_MESSAGE);
 		numberOfTeams = Integer.parseInt(JOptionPane.showInputDialog(null,leagueName + "\n How many teams are to be in the league? \n NOTE: If team number is odd the system will automatically add +1",JOptionPane.INFORMATION_MESSAGE));
 		leagueNumber++;
 		adminNum++;
-		
+
 		if((numberOfTeams % 2) != 0) {  // Checks if number of teams input is even
 			numberOfTeams = numberOfTeams + 1; // If its odd it will add 1 to make it even.
 		}
 		String[] leagueTeamNames = new String[numberOfTeams];
 		for (int i = 0; i < numberOfTeams;i++) {
-		
+
 		leagueTeamNames[i] = (String) (JOptionPane.showInputDialog(null,"("+ (i + 1) + ")" + " Enter team name",JOptionPane.INFORMATION_MESSAGE));
 		if (leagueTeamNames[i].matches(".*[^a-zA-Z].*")) { //Only Alphabetical letters
 			JOptionPane.showMessageDialog(null,"Team names may only contain letters!");
@@ -96,23 +97,23 @@ public class LeagueMenu {
 		pw.println(LeagueDetails);
 		pw.close();
 		pw2.close();
-	
+
     }
-	
-	
-	
-  
+
+
+
+
     public static void viewLeaderboard() {
-      
+
     }
-	
+
 	public static void viewLeagues(String[] leagueList) {
 		String list = (String)(JOptionPane.showInputDialog(null, "Leagues","",JOptionPane.QUESTION_MESSAGE, null, leagueList, leagueList[0]));
 	}
-	
-	
-	
-	
+
+
+
+
 	public static void viewTeams() {
 		boolean found = false;
 		String tempLeagueName = "";
@@ -121,7 +122,7 @@ public class LeagueMenu {
 		int i = 0;
 		if (leagueInfo.length() == 0) {
             JOptionPane.showMessageDialog(null,"No leagues have been created yet");
-		
+
 		} else {
 			try{
 				checkLeagueNumber = (String)JOptionPane.showInputDialog(null,"Please enter league number");
@@ -131,20 +132,20 @@ public class LeagueMenu {
 					tempLeagueNumber = x.next();
 					if(tempLeagueNumber.trim().equals(checkLeagueNumber.trim())) {
 					found = true;
-					}	
-				}				
+					}
+				}
 			}
 			catch(Exception e){}
-		}	
+		}
     }
     public static void viewFixtures() {
-        
+
     }
-    
+
     public static void addResults() {
-        
+
     }
-    
+
     public static void verifyLogin() throws IOException  {
 	String userName   = "",      userPassword   = "";
 	String newUser = "";
@@ -181,13 +182,13 @@ public class LeagueMenu {
 		userName = JOptionPane.showInputDialog("Please enter desired username");
 		userPassword = JOptionPane.showInputDialog("Please enter desired password");
 		in = new Scanner(accountInfo);
-		while(in.hasNext()) 
+		while(in.hasNext())
 		{
 			lineFromFile = in.nextLine();
 			fileElements = lineFromFile.split(",");
 			createdAdminNumber = ((Integer.parseInt(fileElements[2])) + 1);
-			
-		}	
+
+		}
 		in.close();
 		newUser = (userName + "," + userPassword + "," + createdAdminNumber);
 		pw3.println(newUser);
@@ -195,33 +196,33 @@ public class LeagueMenu {
 		pw3.close();
 		System.exit(0);
 		}
-	
+
 	else if (selectedOption == JOptionPane.YES_OPTION)
 	{
-	  in = new Scanner(accountInfo);	
+	  in = new Scanner(accountInfo);
 	  while(in.hasNext())
-	  {		  
+	  {
 	    lineFromFile = in.nextLine();
         fileElements = lineFromFile.split(",");
         userNamesAndPasswords.add(fileElements[0] + "," + fileElements[1]);
-        allUserDetails.add(lineFromFile);	  
+        allUserDetails.add(lineFromFile);
 	  }
 	  in.close();
 	}
 	else
-	  System.out.println("User file not found");	
+	  System.out.println("User file not found");
 
 
-    
+
     while((!(validInput)) && (chance <= 3))
     {
 	  userName = JOptionPane.showInputDialog(null, message1);
 	  if (userName != null)
 	  {
-	    userPassword = JOptionPane.showInputDialog(null, message2);  
+	    userPassword = JOptionPane.showInputDialog(null, message2);
 		if (userPassword != null)
 		{
-		  aUser = userName + "," + userPassword;	
+		  aUser = userName + "," + userPassword;
 		  if (userNamesAndPasswords.contains(aUser))
 		  {
 		     validInput         = true;
@@ -229,7 +230,7 @@ public class LeagueMenu {
 		  }
 		  else
 		  {
-  		     chance += 1; 
+  		     chance += 1;
 			 if (chance <= 3)
 			   JOptionPane.showMessageDialog(null, message3);
 			 else
@@ -248,16 +249,14 @@ public class LeagueMenu {
 	if (validAccessDetails)
 	{
 	  position        = userNamesAndPasswords.indexOf(aUser);
-      tempUserDetails = allUserDetails.get(position);	  
+      tempUserDetails = allUserDetails.get(position);
 	  fileElements    = tempUserDetails.split(",");
-      adminNumber     = Integer.parseInt(fileElements[2]);	  
+      adminNumber     = Integer.parseInt(fileElements[2]);
 	  currentAdminNum = adminNumber;
 	  System.out.println("Hello " + userName + currentAdminNum);
-	  
-	}	
+
+	}
 	else
 	  System.out.print("Goodbye");
-	}	
+	}
 }
-
- 
