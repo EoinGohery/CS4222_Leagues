@@ -34,9 +34,9 @@ public class Leagues{
                 }else if(subSection=="add Results") {
                     addResults();
                 }else if(subSection =="View Teams") {
-					             viewTeams();
+					          viewTeams();
 				        }else if(subSection =="View Leagues") {
-					             viewLeagues();
+					          viewLeagues();
 				        }
 				        else  {
                     sub = false;
@@ -61,7 +61,8 @@ public class Leagues{
 		fileElements = lineFromFile.split(",");
 		leagueCounter =Integer.parseInt(fileElements[0]);
 		}
-		 return leagueCounter;
+    leagueChecker.close();
+		return leagueCounter;
 	}
 
 	public static void createLeague() throws IOException {
@@ -506,17 +507,17 @@ public class Leagues{
 			tempAdminNum =   Integer.parseInt(FileElements[2]);
           if(inputLeagueName.trim().equals(tempLeagueName) && tempAdminNum == currentAdminNum) {
             found = true;
-				    in.close();
 				    File y = new File(tempLeagueNum + "_participants.txt");
 				    on = new Scanner(y);
 				    while(on.hasNext()) {
               lineFromFile2 = on.nextLine();
 					    System.out.println (lineFromFile2);
 	          }
-				  on.close();
+				    on.close();
 		     }
 		 }
-  }
+     in.close();
+   }
 
     public static void viewFixtures() {
 
