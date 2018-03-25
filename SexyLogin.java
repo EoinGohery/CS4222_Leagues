@@ -2,7 +2,6 @@ import java.util.*;
 import java.io.*;
 import javax.swing.*;
 public class LeagueMenu {
-  //test;
     private static final String[] mainMenu = { "Create League", "View and Edit", "Log Out" };
     private static final String[] subMenu = {"View Leagues", "View Teams", "View Leaderboard", "View Fixtures", "Add Results", "Back to Main Menu" };
     private static Scanner x;
