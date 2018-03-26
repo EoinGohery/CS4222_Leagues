@@ -437,9 +437,6 @@ public static void main(String[] args) throws IOException {
 		in.close();
 	}
 
-
-
-
 	public static void viewTeams() throws IOException {
 		String inputLeagueName = JOptionPane.showInputDialog(null,"Enter the name of the league you would like to view");
 		int tempLeagueNum, tempAdminNum;
@@ -471,9 +468,52 @@ public static void main(String[] args) throws IOException {
      in.close();
    }
 
-    public static void viewFixtures() {
-
-    }
+    public static void viewFixtures() throws IOException {
+  		int inputLeagueNum = Integer.parseInt(JOptionPane.showInputDialog(null,"What number league would like to view the fixtures of?"));
+  		int tempLeagueNum, tempAdminNum, homeTeamNum, awayTeamNum, fixtureNum;
+      String tempLeagueName;
+      Scanner in;
+  		Scanner on;
+      Scanner an;
+  		String lineFromFile, lineFromFile2, homeTeamName, awayTeamName;
+  		String fileElements[];
+      String fileElements2[];
+      ArrayList<String> allParicipantDetails = new ArrayList<String>();
+      in = new Scanner(leagueInfo);
+      boolean found = false;
+      while(in.hasNext() && ! found) {
+  			lineFromFile =in.nextLine();
+  			fileElements = lineFromFile.split(",");
+  			tempLeagueNum =  Integer.parseInt(fileElements[0]);
+  			tempLeagueName = fileElements[1];
+  			tempAdminNum =   Integer.parseInt(fileElements[2]);
+            if(inputLeagueNum==tempLeagueNum && tempAdminNum == currentAdminNum) {
+              found = true;
+  				    File x = new File(tempLeagueNum + "_participants.txt");
+              File y = new File(tempLeagueNum + "_fixtures.txt");
+  				    on = new Scanner(y);
+              an = new Scanner(x);
+              while(an.hasNext()) {
+                 lineFromFile2 = an.nextLine();
+                 fileElements2 = lineFromFile2.split(",");
+                 allParicipantDetails.add(fileElements2[1]);
+               }
+  				     while(on.hasNext()) {
+                lineFromFile = on.nextLine();
+                fileElements = lineFromFile.split(",");
+          			fixtureNum =  Integer.parseInt(fileElements[0]);
+          			homeTeamNum = Integer.parseInt(fileElements[1]);
+          			awayTeamNum =   Integer.parseInt(fileElements[2]);
+                homeTeamName=allParicipantDetails.get(homeTeamNum-1);
+                awayTeamName=allParicipantDetails.get(awayTeamNum-1);
+                System.out.println (fileElements[0] + ". " + homeTeamName + " v " + awayTeamName);
+  	          }
+                on.close();
+                an.close();
+  		     }
+  		  }
+        in.close();
+     }
 
     public static void addResults() {
 
