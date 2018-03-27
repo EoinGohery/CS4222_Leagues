@@ -16,17 +16,17 @@ public class Leagues{
 	  public static ArrayList<ArrayList<Integer>> results;
 	  public static int [][] leaderBoard;
 
-public static void main(String[] args) throws IOException {
+public static void main(String[] args) throws IOException { //The main is just a menu for selecting the methods
 	   verifyLogin();
-     boolean main = true;
+     boolean main = true; // while this is true, the user will always be returned to main menu the main
      while (main) {
-          boolean sub = true;
-          String section = (String) JOptionPane.showInputDialog(null, "Menu","",JOptionPane.QUESTION_MESSAGE, null, mainMenu, mainMenu[0]);
+          boolean sub = true; // while this is true the user will always be reverted to the sub menu
+          String section = (String) JOptionPane.showInputDialog(null, "Menu","",JOptionPane.QUESTION_MESSAGE, null, mainMenu, mainMenu[0]);//drop down main menu
           if(section=="Create League") {
               createLeague();
           }else if(section=="View and Edit") {
             while (sub) {
-                String subSection = (String) JOptionPane.showInputDialog(null, "Menu","",JOptionPane.QUESTION_MESSAGE, null, subMenu, subMenu[0]);
+                String subSection = (String) JOptionPane.showInputDialog(null, "Menu","",JOptionPane.QUESTION_MESSAGE, null, subMenu, subMenu[0]);//drop down sub menu
                 if(subSection=="View Leaderboard"){
                     viewLeaderboard();
                 }else if(subSection=="View Fixtures"){
@@ -38,11 +38,11 @@ public static void main(String[] args) throws IOException {
 				        }else if(subSection =="View Leagues") {
 					          viewLeagues();
 				        }
-				        else  {
+				        else  { //Back to main menu
                     sub = false;
                 }
             }
-          }else
+          }else //logout
             main = false;
       }
       JOptionPane.showMessageDialog(null, "You have been logged out");
@@ -234,7 +234,7 @@ public static void main(String[] args) throws IOException {
 		return numberOfnumberOfTeams;
   }
 
-  public static void viewLeaderboard()  throws IOException {
+  public static void viewLeaderboard()  throws IOException { //Your own code with minor changes to input files to allow reading of our files
 	  boolean readFile;
     readFile = readFilesIntoArrayLists();
     if (!readFile)
@@ -472,9 +472,9 @@ public static void main(String[] args) throws IOException {
   		int inputLeagueNum = Integer.parseInt(JOptionPane.showInputDialog(null,"What number league would like to view the fixtures of?"));
   		int tempLeagueNum, tempAdminNum, homeTeamNum, awayTeamNum, fixtureNum;
       String tempLeagueName;
-      Scanner in;
-  		Scanner on;
-      Scanner an;
+      Scanner in; // scanner for finding current league
+  		Scanner on; // scanner for going through the fixtures file
+      Scanner an; // scanner for going through the participants file
   		String lineFromFile, lineFromFile2, homeTeamName, awayTeamName;
   		String fileElements[];
       String fileElements2[];
@@ -487,7 +487,7 @@ public static void main(String[] args) throws IOException {
   			tempLeagueNum =  Integer.parseInt(fileElements[0]);
   			tempLeagueName = fileElements[1];
   			tempAdminNum =   Integer.parseInt(fileElements[2]);
-            if(inputLeagueNum==tempLeagueNum && tempAdminNum == currentAdminNum) {
+            if(inputLeagueNum==tempLeagueNum && tempAdminNum == currentAdminNum) { //find correct league and ensure admin has access
               found = true;
   				    File x = new File(tempLeagueNum + "_participants.txt");
               File y = new File(tempLeagueNum + "_fixtures.txt");
@@ -496,17 +496,17 @@ public static void main(String[] args) throws IOException {
               while(an.hasNext()) {
                  lineFromFile2 = an.nextLine();
                  fileElements2 = lineFromFile2.split(",");
-                 allParicipantDetails.add(fileElements2[1]);
-               }
+                 allParicipantDetails.add(fileElements2[1]); // adds only names of teams to the array
+               }                                             // team 1 is in position 0, team 2 in pos 1, etc
   				     while(on.hasNext()) {
                 lineFromFile = on.nextLine();
                 fileElements = lineFromFile.split(",");
           			fixtureNum =  Integer.parseInt(fileElements[0]);
           			homeTeamNum = Integer.parseInt(fileElements[1]);
           			awayTeamNum =   Integer.parseInt(fileElements[2]);
-                homeTeamName=allParicipantDetails.get(homeTeamNum-1);
-                awayTeamName=allParicipantDetails.get(awayTeamNum-1);
-                System.out.println (fileElements[0] + ". " + homeTeamName + " v " + awayTeamName);
+                homeTeamName=allParicipantDetails.get(homeTeamNum-1); //gets the name sof the teams based on the postion of
+                awayTeamName=allParicipantDetails.get(awayTeamNum-1); // the teaam in the arraylist
+                System.out.println (fileElements[0] + ". " + homeTeamName + " v " + awayTeamName); // displays the fixture
   	          }
                 on.close();
                 an.close();
@@ -515,14 +515,14 @@ public static void main(String[] args) throws IOException {
         in.close();
      }
 
-    public static void addResults() throws IOException {
+    public static void addResults() throws IOException { // similiar to the view fixtures method with the addition of another scanner
       	int inputLeagueNum = Integer.parseInt(JOptionPane.showInputDialog(null,"What number league would like to add results to?"));
     		int tempLeagueNum, tempAdminNum, homeTeamNum, awayTeamNum, fixtureNum, printAwayScore, printHomeScore;
         int  currentFixtureNum = 1;
         Scanner in;
     		Scanner on;
         Scanner an;
-        Scanner un;
+        Scanner un; // scanner to determin the current fixture that is to be input
     		String lineFromFile, lineFromFile2, homeTeamName, awayTeamName, tempLeagueName, fix;
     		String fileElements[];
         String fileElements2[];
@@ -550,7 +550,7 @@ public static void main(String[] args) throws IOException {
                    fileElements2 = lineFromFile2.split(",");
                    allParicipantDetails.add(fileElements2[1]);
                 }
-                while(un.hasNext()) {
+                while(un.hasNext()) { // only the earliest of fixtures can be inputed one at a time
                   un.nextLine();
                   currentFixtureNum++;
                 }
@@ -566,6 +566,7 @@ public static void main(String[] args) throws IOException {
                   fix = (fixtureNum + ". " + homeTeamName + " v " + awayTeamName);
                   if (fixtureNum==currentFixtureNum) {
                     printHomeScore = Integer.parseInt(JOptionPane.showInputDialog(null, fix + "\n Home Team Score:"));
+                    // users input the score of each team
                     printAwayScore = Integer.parseInt(JOptionPane.showInputDialog(null, fix + "\n Away Team Score:"));
                     out.println(fixtureNum + "," + printHomeScore + "," + printAwayScore);
                   }
