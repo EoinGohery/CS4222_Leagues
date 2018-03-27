@@ -515,8 +515,67 @@ public static void main(String[] args) throws IOException {
         in.close();
      }
 
-    public static void addResults() {
-
+    public static void addResults() throws IOException {
+      	int inputLeagueNum = Integer.parseInt(JOptionPane.showInputDialog(null,"What number league would like to add results to?"));
+    		int tempLeagueNum, tempAdminNum, homeTeamNum, awayTeamNum, fixtureNum, printAwayScore, printHomeScore;
+        int  currentFixtureNum = 1;
+        Scanner in;
+    		Scanner on;
+        Scanner an;
+        Scanner un;
+    		String lineFromFile, lineFromFile2, homeTeamName, awayTeamName, tempLeagueName, fix;
+    		String fileElements[];
+        String fileElements2[];
+        ArrayList<String> allParicipantDetails = new ArrayList<String>();
+        in = new Scanner(leagueInfo);
+        boolean found = false;
+        while(in.hasNext() && ! found) {
+    			lineFromFile =in.nextLine();
+    			fileElements = lineFromFile.split(",");
+    			tempLeagueNum =  Integer.parseInt(fileElements[0]);
+    			tempLeagueName = fileElements[1];
+    			tempAdminNum =   Integer.parseInt(fileElements[2]);
+              if(inputLeagueNum==tempLeagueNum && tempAdminNum == currentAdminNum) {
+                found = true;
+    				    File x = new File(tempLeagueNum + "_participants.txt");
+                File y = new File(tempLeagueNum + "_fixtures.txt");
+                File z = new File(tempLeagueNum + "_outcomes.txt");
+            	  FileWriter printed = new FileWriter(z,true);
+                PrintWriter out = new PrintWriter(printed);
+    				    on = new Scanner(y);
+                an = new Scanner(x);
+                un = new Scanner(z);
+                while(an.hasNext()) {
+                   lineFromFile2 = an.nextLine();
+                   fileElements2 = lineFromFile2.split(",");
+                   allParicipantDetails.add(fileElements2[1]);
+                }
+                while(un.hasNext()) {
+                  un.nextLine();
+                  currentFixtureNum++;
+                }
+                un.close();
+    				    while(on.hasNext()) {
+                  lineFromFile = on.nextLine();
+                  fileElements = lineFromFile.split(",");
+            			fixtureNum =  Integer.parseInt(fileElements[0]);
+            			homeTeamNum = Integer.parseInt(fileElements[1]);
+            			awayTeamNum =   Integer.parseInt(fileElements[2]);
+                  homeTeamName=allParicipantDetails.get(homeTeamNum-1);
+                  awayTeamName=allParicipantDetails.get(awayTeamNum-1);
+                  fix = (fixtureNum + ". " + homeTeamName + " v " + awayTeamName);
+                  if (fixtureNum==currentFixtureNum) {
+                    printHomeScore = Integer.parseInt(JOptionPane.showInputDialog(null, fix + "\n Home Team Score:"));
+                    printAwayScore = Integer.parseInt(JOptionPane.showInputDialog(null, fix + "\n Away Team Score:"));
+                    out.println(fixtureNum + "," + printHomeScore + "," + printAwayScore);
+                  }
+    	          }
+                  out.close();
+                  on.close();
+                  an.close();
+    		     }
+    		  }
+          in.close();
     }
 
     public static void verifyLogin() throws IOException  {
