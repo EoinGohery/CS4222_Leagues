@@ -31,7 +31,7 @@ public static void main(String[] args) throws IOException {
                     viewLeaderboard();
                 }else if(subSection=="View Fixtures"){
                     viewFixtures();
-                }else if(subSection=="add Results") {
+                }else if(subSection=="Add Results") {
                     addResults();
                 }else if(subSection =="View Teams") {
 					          viewTeams();
