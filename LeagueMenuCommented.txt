@@ -536,6 +536,7 @@ public static void main(String[] args) throws IOException {
 	*Then reads team names and assigns them a number,this number -1 will be equal to their
 	*position in the fixtures file,allowing is to replace the numbers with the actual team names
 	*Fixture numbers and the the two teams playing against eachother are then printed
+*/
 
     public static void viewFixtures() throws IOException {
   		int inputLeagueNum = Integer.parseInt(JOptionPane.showInputDialog(null,"What number league would like to view the fixtures of?"));
@@ -591,6 +592,7 @@ public static void main(String[] args) throws IOException {
 	*the file 'outcomes'
 	*When the fixture file has no next line,(no more fitxtures available) the loop will end and the user will not be asked to
 	*input anymore results.
+*/
 
 
 
