@@ -493,6 +493,13 @@ public static void main(String[] args) throws IOException {
 		}
 		in.close();
 	}
+/**	*User is asked to enter the name of the league he would like to view
+	*If the league name exists in leagueInfo file and he is an admin of that league then the teams will
+	*be displayed.
+	*When checking the team name and admin number matches,the league number is also stored in a variable
+	*This is used to view the team list which would be stored in a text file called (LeagueNumber + _participants.txt)
+*/
+
 
 	public static void viewTeams() throws IOException {
 		String inputLeagueName = JOptionPane.showInputDialog(null,"Enter the name of the league you would like to view");
@@ -524,6 +531,12 @@ public static void main(String[] args) throws IOException {
 		 }
      in.close();
    }
+/**	*user enters league number,checks if league number matches admin number of the user 
+	*Then reads team names from participants file and adds to array
+	*Then reads team names and assigns them a number,this number -1 will be equal to their
+	*position in the fixtures file,allowing is to replace the numbers with the actual team names
+	*Fixture numbers and the the two teams playing against eachother are then printed
+*/
 
     public static void viewFixtures() throws IOException {
   		int inputLeagueNum = Integer.parseInt(JOptionPane.showInputDialog(null,"What number league would like to view the fixtures of?"));
@@ -571,6 +584,17 @@ public static void main(String[] args) throws IOException {
   		  }
         in.close();
      }
+/**	*User is asked to input number of league he would like to check
+	*Checks if the league number exists and if it matches the users admin number
+	*Team names are recieved through the particpants file and are matched with their
+	*corresponding numbers in fixtures
+	*Results are displayed using the fixture number,user is asked to input the home and away team scores which is then printed to 
+	*the file 'outcomes'
+	*When the fixture file has no next line,(no more fitxtures available) the loop will end and the user will not be asked to
+	*input anymore results.
+*/
+
+
 
     public static void addResults() throws IOException { // similiar to the view fixtures method with the addition of another scanner
       	int inputLeagueNum = Integer.parseInt(JOptionPane.showInputDialog(null,"What number league would like to add results to?"));
@@ -743,3 +767,4 @@ public static void main(String[] args) throws IOException {
 	         System.out.print("Goodbye");
 	  }
 }
+   
