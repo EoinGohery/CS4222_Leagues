@@ -1,7 +1,17 @@
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
-public class Leagues{
+public class LeagueMenu{
+	
+	
+	
+	/**
+		* Global variables that store String arrays and Array Lists,
+		* as well as stores the Admin number of the currently logged in
+		* user and tells other methods which leagues to show.
+		
+	*/
+	
     private static final String[] mainMenu = { "Create League", "View and Edit", "Log Out" };
     private static final String[] subMenu = {"View Leagues", "View Teams", "View Leaderboard", "View Fixtures", "Add Results", "Back to Main Menu" };
     private static Scanner x;
@@ -13,20 +23,27 @@ public class Leagues{
     private static File leagueInfo = new File ("leagueInfo.txt");
     public static ArrayList<ArrayList<String>>  teams;
     public static ArrayList<ArrayList<Integer>> fixtures;
-	  public static ArrayList<ArrayList<Integer>> results;
-	  public static int [][] leaderBoard;
+	public static ArrayList<ArrayList<Integer>> results;
+	public static int [][] leaderBoard;
 
-public static void main(String[] args) throws IOException { //The main is just a menu for selecting the methods
+	
+	/** 
+		* The main is used as a menu for selecting the methods
+		* While boolean main is true the user will always be returned to the main menu 
+		* after finishing one action. 
+		* As is the same for boolean sub and the corresponding sub menu.
+	*/
+public static void main(String[] args) throws IOException { 
 	   verifyLogin();
-     boolean main = true; // while this is true, the user will always be returned to main menu the main
+     boolean main = true; 
      while (main) {
-          boolean sub = true; // while this is true the user will always be reverted to the sub menu
-          String section = (String) JOptionPane.showInputDialog(null, "Menu","",JOptionPane.QUESTION_MESSAGE, null, mainMenu, mainMenu[0]);//drop down main menu
+          boolean sub = true; 
+          String section = (String) JOptionPane.showInputDialog(null, "Menu","",JOptionPane.QUESTION_MESSAGE, null, mainMenu, mainMenu[0]);
           if(section=="Create League") {
               createLeague();
           }else if(section=="View and Edit") {
             while (sub) {
-                String subSection = (String) JOptionPane.showInputDialog(null, "Menu","",JOptionPane.QUESTION_MESSAGE, null, subMenu, subMenu[0]);//drop down sub menu
+                String subSection = (String) JOptionPane.showInputDialog(null, "Menu","",JOptionPane.QUESTION_MESSAGE, null, subMenu, subMenu[0]);
                 if(subSection=="View Leaderboard"){
                     viewLeaderboard();
                 }else if(subSection=="View Fixtures"){
@@ -38,17 +55,22 @@ public static void main(String[] args) throws IOException { //The main is just a
 				        }else if(subSection =="View Leagues") {
 					          viewLeagues();
 				        }
-				        else  { //Back to main menu
+				        else  {
                     sub = false;
                 }
             }
-          }else //logout
+          }else
             main = false;
       }
       JOptionPane.showMessageDialog(null, "You have been logged out");
       System.exit(0);
 	}
 
+	/**
+		* Scans "leagueInfo.txt" for the latest league number,
+		* to be used by some other methods such as createLeague
+	*/
+	
 	public static int checkAmmountOfLeagues() throws IOException {
 		int leagueCounter = 0;
 		String lineFromFile;
@@ -64,16 +86,29 @@ public static void main(String[] args) throws IOException { //The main is just a
 		return leagueCounter;
 	}
 
+	/**
+		* During creation the new league number is assigned from the value returned
+		* from checkAmmountOfLeagues method + 1.
+		* Asks for input of league name. 
+		* Asks for input of team names until all team slots are filled,
+		* a simple loop inside the method only allows a-zA-Z characters.
+		* Upon creation, all teams are printed out for verification and printed to file.
+		* Executes fixture generation.
+		* File format: "(league number) + _participants.txt"
+		
+	*/
+	
 	public static void createLeague() throws IOException {
 		//JOptionPane, asks for League name and number of teams, automatically asigns league number based on how many already exist
 		// JOptionPane, asks to input team names corresponding to number of teams
+		
 		leagueInfo.createNewFile();
 		String leagueName;
 		int leagueNumber = checkAmmountOfLeagues();
 		int numberOfTeams;
 		String adminNumber = "admin";
 		String fileTeamNames = "";
-		String teamNames = ""; // The string for listing teams, in line 57 the teams are added 1 by 1.
+		String teamNames = ""; 
 		FileWriter outputStream = new FileWriter(leagueInfo,true);
 		FileWriter outputStream2 = new FileWriter((leagueNumber+1) + "_participants.txt",true);
 		leagueNumber++;
@@ -89,11 +124,11 @@ public static void main(String[] args) throws IOException { //The main is just a
 			     i--; //If input is wrong then then the loop doesn't go forward.
 			     continue;
 		  }
-		teamNames += (i + 1) + ". " + leagueTeamNames[i] + "\n"; // Format for JOptionPane message
-		fileTeamNames = (i + 1) + "," + leagueTeamNames[i]; // Actual format to be written to file
+		teamNames += (i + 1) + ". " + leagueTeamNames[i] + "\n";
+		fileTeamNames = (i + 1) + "," + leagueTeamNames[i]; 
 		pw2.println(fileTeamNames);
 		}
-		JOptionPane.showMessageDialog(null,teamNames); // List teams
+		JOptionPane.showMessageDialog(null,teamNames);
 		String LeagueDetails = leagueNumber + "," + leagueName + "," + currentAdminNum;
 		pw.println(LeagueDetails);
 		pw.close();
@@ -101,6 +136,16 @@ public static void main(String[] args) throws IOException { //The main is just a
 		generateFixtures();
   }
 
+	/**
+		* Fixtures are generated right after creating a league,
+		* calls getNumberOfTeams method to get number of teams
+		* Checks for odd number of teams and creates a "dummy" fixture.
+		* int MatchCounter keeps track of match number, for example there will be 780 in a 20 team league.
+		* Keeps track of Home and Away teams.
+		* Prints to file.
+		* File format: "(league number) + _fixtures.txt"
+	*/
+  
 	public static void generateFixtures() throws IOException  {
     int numberOfTeams, totalNumberOfRounds, numberOfMatchesPerRound;
     int roundNumber, matchNumber, homeTeamNumber = 0, awayTeamNumber = 0, even, odd;
@@ -212,7 +257,13 @@ public static void main(String[] args) throws IOException { //The main is just a
     pwFixt.close();
   }
 
-
+	/**
+		* This method is called during generating fixtures,
+		* scans "(league number)_participants.txt" for number of teams
+		* present. Returns value.
+	*/
+  
+  
 	public static int getNumberOfTeams() throws IOException {
     int numberOfnumberOfTeams = 0;
     Scanner in;
@@ -234,7 +285,8 @@ public static void main(String[] args) throws IOException { //The main is just a
 		return numberOfnumberOfTeams;
   }
 
-  public static void viewLeaderboard()  throws IOException { //Your own code with minor changes to input files to allow reading of our files
+  
+  public static void viewLeaderboard()  throws IOException {
 	  boolean readFile;
     readFile = readFilesIntoArrayLists();
     if (!readFile)
@@ -424,6 +476,11 @@ public static void main(String[] args) throws IOException { //The main is just a
     }
   }
 
+	/**
+		* Scans "leagueInfo.txt",
+		* prints to console.
+	*/
+  
 	public static void viewLeagues() throws IOException {
 		Scanner in;
 		String lineFromFile;
@@ -579,6 +636,21 @@ public static void main(String[] args) throws IOException { //The main is just a
           in.close();
     }
 
+	/**
+		* If the "userInfo.txt" file is empty or does not exist,
+		* prompts user to create a new account, otherwise gives option 
+		* to create a new account or login to an existing one.
+		
+		* While loop allows 3 attempts to login.
+		
+		* During accountCreation the last Admin number is scanned 
+		* to check for which number to assign to the new account.
+		*
+		* After login the users admin number is assigned to the global variable
+		* "currentAdminNum"
+		* Prints out logged in users name + admin number.
+	*/
+	
     public static void verifyLogin() throws IOException  {
 	     String userName   = "",      userPassword   = "";
 	     String newUser = "";
