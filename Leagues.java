@@ -1,17 +1,17 @@
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
-public class LeagueMenu{
-	
-	
-	
+public class Leagues{
+
+
+
 	/**
 		* Global variables that store String arrays and Array Lists,
 		* as well as stores the Admin number of the currently logged in
 		* user and tells other methods which leagues to show.
-		
+
 	*/
-	
+
     private static final String[] mainMenu = { "Create League", "View and Edit", "Log Out" };
     private static final String[] subMenu = {"View Leagues", "View Teams", "View Leaderboard", "View Fixtures", "Add Results", "Back to Main Menu" };
     private static Scanner x;
@@ -26,18 +26,18 @@ public class LeagueMenu{
 	public static ArrayList<ArrayList<Integer>> results;
 	public static int [][] leaderBoard;
 
-	
-	/** 
+
+	/**
 		* The main is used as a menu for selecting the methods
-		* While boolean main is true the user will always be returned to the main menu 
-		* after finishing one action. 
+		* While boolean main is true the user will always be returned to the main menu
+		* after finishing one action.
 		* As is the same for boolean sub and the corresponding sub menu.
 	*/
-public static void main(String[] args) throws IOException { 
+public static void main(String[] args) throws IOException {
 	   verifyLogin();
-     boolean main = true; 
+     boolean main = true;
      while (main) {
-          boolean sub = true; 
+          boolean sub = true;
           String section = (String) JOptionPane.showInputDialog(null, "Menu","",JOptionPane.QUESTION_MESSAGE, null, mainMenu, mainMenu[0]);
           if(section=="Create League") {
               createLeague();
@@ -70,7 +70,7 @@ public static void main(String[] args) throws IOException {
 		* Scans "leagueInfo.txt" for the latest league number,
 		* to be used by some other methods such as createLeague
 	*/
-	
+
 	public static int checkAmmountOfLeagues() throws IOException {
 		int leagueCounter = 0;
 		String lineFromFile;
@@ -89,26 +89,26 @@ public static void main(String[] args) throws IOException {
 	/**
 		* During creation the new league number is assigned from the value returned
 		* from checkAmmountOfLeagues method + 1.
-		* Asks for input of league name. 
+		* Asks for input of league name.
 		* Asks for input of team names until all team slots are filled,
 		* a simple loop inside the method only allows a-zA-Z characters.
 		* Upon creation, all teams are printed out for verification and printed to file.
 		* Executes fixture generation.
 		* File format: "(league number) + _participants.txt"
-		
+
 	*/
-	
+
 	public static void createLeague() throws IOException {
 		//JOptionPane, asks for League name and number of teams, automatically asigns league number based on how many already exist
 		// JOptionPane, asks to input team names corresponding to number of teams
-		
+
 		leagueInfo.createNewFile();
 		String leagueName;
 		int leagueNumber = checkAmmountOfLeagues();
 		int numberOfTeams;
 		String adminNumber = "admin";
 		String fileTeamNames = "";
-		String teamNames = ""; 
+		String teamNames = "";
 		FileWriter outputStream = new FileWriter(leagueInfo,true);
 		FileWriter outputStream2 = new FileWriter((leagueNumber+1) + "_participants.txt",true);
 		leagueNumber++;
@@ -125,7 +125,7 @@ public static void main(String[] args) throws IOException {
 			     continue;
 		  }
 		teamNames += (i + 1) + ". " + leagueTeamNames[i] + "\n";
-		fileTeamNames = (i + 1) + "," + leagueTeamNames[i]; 
+		fileTeamNames = (i + 1) + "," + leagueTeamNames[i];
 		pw2.println(fileTeamNames);
 		}
 		JOptionPane.showMessageDialog(null,teamNames);
@@ -145,7 +145,7 @@ public static void main(String[] args) throws IOException {
 		* Prints to file.
 		* File format: "(league number) + _fixtures.txt"
 	*/
-  
+
 	public static void generateFixtures() throws IOException  {
     int numberOfTeams, totalNumberOfRounds, numberOfMatchesPerRound;
     int roundNumber, matchNumber, homeTeamNumber = 0, awayTeamNumber = 0, even, odd;
@@ -262,8 +262,8 @@ public static void main(String[] args) throws IOException {
 		* scans "(league number)_participants.txt" for number of teams
 		* present. Returns value.
 	*/
-  
-  
+
+
 	public static int getNumberOfTeams() throws IOException {
     int numberOfnumberOfTeams = 0;
     Scanner in;
@@ -285,7 +285,7 @@ public static void main(String[] args) throws IOException {
 		return numberOfnumberOfTeams;
   }
 
-  
+
   public static void viewLeaderboard()  throws IOException {
 	  boolean readFile;
     readFile = readFilesIntoArrayLists();
@@ -480,7 +480,7 @@ public static void main(String[] args) throws IOException {
 		* Scans "leagueInfo.txt",
 		* prints to console.
 	*/
-  
+
 	public static void viewLeagues() throws IOException {
 		Scanner in;
 		String lineFromFile;
@@ -531,7 +531,7 @@ public static void main(String[] args) throws IOException {
 		 }
      in.close();
    }
-/**	*user enters league number,checks if league number matches admin number of the user 
+/**	*user enters league number,checks if league number matches admin number of the user
 	*Then reads team names from participants file and adds to array
 	*Then reads team names and assigns them a number,this number -1 will be equal to their
 	*position in the fixtures file,allowing is to replace the numbers with the actual team names
@@ -588,7 +588,7 @@ public static void main(String[] args) throws IOException {
 	*Checks if the league number exists and if it matches the users admin number
 	*Team names are recieved through the particpants file and are matched with their
 	*corresponding numbers in fixtures
-	*Results are displayed using the fixture number,user is asked to input the home and away team scores which is then printed to 
+	*Results are displayed using the fixture number,user is asked to input the home and away team scores which is then printed to
 	*the file 'outcomes'
 	*When the fixture file has no next line,(no more fitxtures available) the loop will end and the user will not be asked to
 	*input anymore results.
@@ -662,19 +662,19 @@ public static void main(String[] args) throws IOException {
 
 	/**
 		* If the "userInfo.txt" file is empty or does not exist,
-		* prompts user to create a new account, otherwise gives option 
+		* prompts user to create a new account, otherwise gives option
 		* to create a new account or login to an existing one.
-		
+
 		* While loop allows 3 attempts to login.
-		
-		* During accountCreation the last Admin number is scanned 
+
+		* During accountCreation the last Admin number is scanned
 		* to check for which number to assign to the new account.
 		*
 		* After login the users admin number is assigned to the global variable
 		* "currentAdminNum"
 		* Prints out logged in users name + admin number.
 	*/
-	
+
     public static void verifyLogin() throws IOException  {
 	     String userName   = "",      userPassword   = "";
 	     String newUser = "";
@@ -767,4 +767,3 @@ public static void main(String[] args) throws IOException {
 	         System.out.print("Goodbye");
 	  }
 }
-   
